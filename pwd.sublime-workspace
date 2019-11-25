@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"en",
+				"encodings"
+			],
+			[
 				"pas",
 				"passwords"
 			]
@@ -74,6 +78,12 @@
 	[
 		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/tasks.txt",
 		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/pwd2.py",
+		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/namespace.py",
+		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/error.py",
+		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/pwd.txt",
+		"/C/Users/Чистов А.8КЛАСС/AppData/Roaming/Sublime Text 3/Packages/User/SublimeREPL.sublime-settings",
+		"/C/Users/Чистов А.8КЛАСС/AppData/Roaming/Sublime Text 3/Packages/User/SublimeREPL/config/Python/Main.sublime-menu",
+		"/C/Users/Чистов А.8КЛАСС/AppData/Roaming/Sublime Text 3/Packages/SublimeREPL/SublimeREPL.sublime-settings",
 		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/pwd.py",
 		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/func.py",
 		"/C/Users/Чистов А.8КЛАСС/Downloads/Яндекс.html",
