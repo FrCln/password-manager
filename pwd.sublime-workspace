@@ -15,6 +15,16 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "pdk.py",
+			"settings":
+			{
+				"buffer_size": 618,
+				"encoding": "UTF-8",
+				"line_ending": "Windows",
+				"name": "import base64"
+			}
+		}
 	],
 	"build_system": "Packages/Python/Python.sublime-build",
 	"build_system_choices":
@@ -76,6 +86,7 @@
 	],
 	"file_history":
 	[
+		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/requirements.txt",
 		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/tasks.txt",
 		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/pwd2.py",
 		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/namespace.py",
@@ -111,6 +122,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"...",
+			">>>",
 			"direction"
 		],
 		"highlight": true,
@@ -129,8 +142,38 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "pdk.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 618,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								618,
+								618
+							]
+						],
+						"settings":
+						{
+							"auto_name": "import base64",
+							"syntax": "Packages/Python/Python.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 252.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		}
 	],
