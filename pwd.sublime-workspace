@@ -16,13 +16,12 @@
 	"buffers":
 	[
 		{
-			"file": "pdk.py",
+			"file": "tasks.txt",
 			"settings":
 			{
-				"buffer_size": 618,
+				"buffer_size": 277,
 				"encoding": "UTF-8",
-				"line_ending": "Windows",
-				"name": "import base64"
+				"line_ending": "Unix"
 			}
 		}
 	],
@@ -82,10 +81,11 @@
 	},
 	"expanded_folders":
 	[
-		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger"
+		"/Users/anatoly/ttt/password-maneger"
 	],
 	"file_history":
 	[
+		"/Users/anatoly/ttt/password-maneger/pdk.py",
 		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/requirements.txt",
 		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/tasks.txt",
 		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/pwd2.py",
@@ -108,7 +108,7 @@
 	],
 	"find":
 	{
-		"height": 37.0
+		"height": 28.0
 	},
 	"find_in_files":
 	{
@@ -147,28 +147,27 @@
 			[
 				{
 					"buffer": 0,
-					"file": "pdk.py",
+					"file": "tasks.txt",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 618,
+						"buffer_size": 277,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								618,
-								618
+								277,
+								277
 							]
 						],
 						"settings":
 						{
-							"auto_name": "import base64",
-							"syntax": "Packages/Python/Python.sublime-syntax"
+							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 252.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -179,7 +178,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 37.0
+		"height": 28.0
 	},
 	"input":
 	{
@@ -220,7 +219,7 @@
 	"project": "pwd.sublime-project",
 	"replace":
 	{
-		"height": 70.0
+		"height": 52.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -258,7 +257,7 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 150.0,
+	"side_bar_width": 219.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
