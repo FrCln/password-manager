@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"enco",
+				"encode"
+			],
+			[
+				"e",
+				"encoding"
+			],
+			[
 				"en",
 				"encodings"
 			],
@@ -19,9 +27,18 @@
 			"file": "tasks.txt",
 			"settings":
 			{
-				"buffer_size": 277,
+				"buffer_size": 308,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "pwd.py",
+			"settings":
+			{
+				"buffer_size": 2947,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
 			}
 		}
 	],
@@ -81,17 +98,17 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/anatoly/ttt/password-maneger"
+		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger"
 	],
 	"file_history":
 	[
+		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/pwd.txt",
 		"/Users/anatoly/ttt/password-maneger/pdk.py",
 		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/requirements.txt",
 		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/tasks.txt",
 		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/pwd2.py",
 		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/namespace.py",
 		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/error.py",
-		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/pwd.txt",
 		"/C/Users/Чистов А.8КЛАСС/AppData/Roaming/Sublime Text 3/Packages/User/SublimeREPL.sublime-settings",
 		"/C/Users/Чистов А.8КЛАСС/AppData/Roaming/Sublime Text 3/Packages/User/SublimeREPL/config/Python/Main.sublime-menu",
 		"/C/Users/Чистов А.8КЛАСС/AppData/Roaming/Sublime Text 3/Packages/SublimeREPL/SublimeREPL.sublime-settings",
@@ -108,7 +125,7 @@
 	],
 	"find":
 	{
-		"height": 28.0
+		"height": 37.0
 	},
 	"find_in_files":
 	{
@@ -142,7 +159,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -151,20 +168,50 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 277,
+						"buffer_size": 308,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								277,
-								277
+								308,
+								308
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "pwd.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2947,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1601,
+								1601
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -178,7 +225,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 28.0
+		"height": 37.0
 	},
 	"input":
 	{
@@ -219,7 +266,7 @@
 	"project": "pwd.sublime-project",
 	"replace":
 	{
-		"height": 52.0
+		"height": 70.0
 	},
 	"save_all_on_build": true,
 	"select_file":
