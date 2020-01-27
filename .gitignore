@@ -1,5 +1,12 @@
-
+*pycache*
+venv
 func.py
 error.py
 namespace.py
 pdk.py
+pwd.bin
+client_secrets.json
+*.json
+yadisk-secret.txt
+*.pyc
+pwd.sublime-workspace

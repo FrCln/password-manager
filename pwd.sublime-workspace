@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"yad",
+				"yadisk_token"
+			],
+			[
+				"a",
+				"application-secret"
+			],
+			[
 				"enco",
 				"encode"
 			],
@@ -27,16 +35,36 @@
 			"file": "tasks.txt",
 			"settings":
 			{
-				"buffer_size": 308,
+				"buffer_size": 344,
 				"encoding": "UTF-8",
-				"line_ending": "Unix"
+				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "pwd.py",
+			"file": "disk-get-token.py",
 			"settings":
 			{
-				"buffer_size": 2947,
+				"buffer_size": 597,
+				"encoding": "UTF-8",
+				"line_ending": "Windows",
+				"name": "import sys"
+			}
+		},
+		{
+			"file": "disk-test.py",
+			"settings":
+			{
+				"buffer_size": 964,
+				"encoding": "UTF-8",
+				"line_ending": "Windows",
+				"name": "import yadisk"
+			}
+		},
+		{
+			"file": "requirements.txt",
+			"settings":
+			{
+				"buffer_size": 61,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -98,13 +126,23 @@
 	},
 	"expanded_folders":
 	[
-		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger"
+		"/C/Python/projects/password-meneger"
 	],
 	"file_history":
 	[
+		"/C/Python/projects/password-meneger/yadisk-secret.txt",
+		"/C/Python/projects/password-meneger/drive-test.py",
+		"/C/Python/projects/password-meneger/venv/Scripts/activate",
+		"/C/Python/projects/password-meneger/venv/Scripts/activate.bat",
+		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/requirements.txt",
+		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/.gitignore",
+		"/C/Users/Чистов А.8КЛАСС/AppData/Local/Programs/Python/Python38-32/Lib/site-packages/pydrive/auth.py",
+		"/C/Users/Чистов А.8КЛАСС/AppData/Local/Programs/Python/Python38-32/Lib/site-packages/oauth2client/tools.py",
+		"/C/Users/Чистов А.8КЛАСС/AppData/Local/Programs/Python/Python38-32/Lib/site-packages/oauth2client/client.py",
+		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/pwd.py",
+		"/C/Users/Чистов А.8КЛАСС/Downloads/credentials.json",
 		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/pwd.txt",
 		"/Users/anatoly/ttt/password-maneger/pdk.py",
-		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/requirements.txt",
 		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/tasks.txt",
 		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/pwd2.py",
 		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/namespace.py",
@@ -112,7 +150,6 @@
 		"/C/Users/Чистов А.8КЛАСС/AppData/Roaming/Sublime Text 3/Packages/User/SublimeREPL.sublime-settings",
 		"/C/Users/Чистов А.8КЛАСС/AppData/Roaming/Sublime Text 3/Packages/User/SublimeREPL/config/Python/Main.sublime-menu",
 		"/C/Users/Чистов А.8КЛАСС/AppData/Roaming/Sublime Text 3/Packages/SublimeREPL/SublimeREPL.sublime-settings",
-		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/pwd.py",
 		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/func.py",
 		"/C/Users/Чистов А.8КЛАСС/Downloads/Яндекс.html",
 		"/C/Users/Чистов А.8КЛАСС/Documents/GitHub/password-meneger/README.md",
@@ -139,6 +176,12 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"78ce1482322f46ec8b8a8d91b7663209",
+			"Ч",
+			"Чистов",
+			"BaseHTTPServer",
+			"ClientRedirectServer",
+			"ClientRedirectHandler",
 			"...",
 			">>>",
 			"direction"
@@ -168,15 +211,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 308,
+						"buffer_size": 344,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								308,
-								308
+								0,
+								0
 							]
 						],
 						"settings":
@@ -187,37 +230,93 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "pwd.py",
+					"file": "disk-get-token.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2947,
+						"buffer_size": 597,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1601,
-								1601
+								229,
+								229
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"auto_name": "import sys",
+							"syntax": "Packages/Python/Python.sublime-syntax"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "disk-test.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 964,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								351,
+								336
+							]
+						],
+						"settings":
+						{
+							"auto_name": "import yadisk",
+							"syntax": "Packages/Python/Python.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 84.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "requirements.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 61,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								61,
+								61
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
 					"type": "text"
 				}
 			]
