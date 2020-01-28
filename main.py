@@ -8,7 +8,7 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 base_changed = False
 salt = b'\x82\xe1\x85~!\xaf\xd5\xd2}\xbc#\xf0\x0f\xed\x02\xf9'
-pwd = ''
+main_password = ''
 
 
 def main():
@@ -30,9 +30,23 @@ def get_command():
     return input()
 
 
+def connect_yadisk():
+    pass
+
+
+def download_file():
+    """
+    a = y.listdir('app:/') -> list of dicts
+    a[i]['name'], a[i]['created']
+    y.download('app:/pwd.bin', 'pwd.bin')
+
+    """
+    pass
+
+
 def read_file():
-    global pwd
-    pwd = input('Введите пароль: ')
+    global main_password
+    main_password = input('Введите пароль: ')
     global passwords
     try:
         with open('pwd.bin', 'rb') as f:
@@ -50,7 +64,7 @@ def read_file():
         iterations=100000,
         backend=default_backend()
     )
-    key = base64.urlsafe_b64encode(kdf.derive(pwd.encode(encoding='utf-8')))
+    key = base64.urlsafe_b64encode(kdf.derive(main_password.encode(encoding='utf-8')))
     f = Fernet(key)
     try:
         data = f.decrypt(data)
@@ -74,10 +88,18 @@ def save_file():
         iterations=100000,
         backend=default_backend()
     )
-    key = base64.urlsafe_b64encode(kdf.derive(pwd.encode(encoding='utf-8')))
+    key = base64.urlsafe_b64encode(kdf.derive(main_password.encode(encoding='utf-8')))
     f = Fernet(key)
     with open('pwd.bin', 'wb') as file:
         file.write(f.encrypt(data))
+
+
+def upload_file():
+    """
+    y.remove('app:/pwd.bin')
+    y.upload('pwd.bin', 'app:/pwd.bin')
+    """
+    pass
 
 
 def add_password():
