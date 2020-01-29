@@ -5,13 +5,21 @@ from cryptography.fernet import Fernet, InvalidToken
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+from datetime import datetime, timedelta, timezone
+import os
+import yadisk
+import webbrowser
+
 
 base_changed = False
 salt = b'\x82\xe1\x85~!\xaf\xd5\xd2}\xbc#\xf0\x0f\xed\x02\xf9'
 main_password = ''
+yandex_disk = None
 
 
 def main():
+    connect_yadisk()
+    download_file()
     read_file()
 
     while True:
@@ -31,17 +39,60 @@ def get_command():
 
 
 def connect_yadisk():
-    pass
+    global yandex_disk
+    try:
+        with open('yadisk-secret.txt') as f:
+            application_id = f.readline().strip()
+            application_secret = f.readline().strip()
+            yadisk_token = f.readline().strip()
+
+    except FileNotFoundError:
+        print('Яндекс-диск недоступен')
+        return
+
+    if not yadisk_token:
+        yandex_disk = yadisk.YaDisk(application_id, application_secret)
+        url = yandex_disk.get_code_url()
+        webbrowser.open(url)
+        code = input('Введите код, полученный от Яндекс-диска: ')
+        try:
+            response = yandex_disk.get_token(code)
+        except yadisk.exceptions.BadRequestError:
+            print("Bad code")
+            sys.exit(1)
+
+        yadisk_token = yandex_disk.token = response.access_token
+        with open('yadisk-secret.txt', 'a') as f:
+            f.write('\n' + yadisk_token + '\n')
+
+    else:
+        yandex_disk = yadisk.YaDisk(token=yadisk_token)
+
+    if not yandex_disk.check_token():
+        print('Яндекс-диск недоступен')
+        yandex_disk = None
 
 
 def download_file():
-    """
-    a = y.listdir('app:/') -> list of dicts
-    a[i]['name'], a[i]['created']
-    y.download('app:/pwd.bin', 'pwd.bin')
-
-    """
-    pass
+    if not yandex_disk:
+        return
+    created = None
+    for file in yandex_disk.listdir('app:/'):
+        if file['name'] == 'pwd.bin':
+            created = file['created']
+    local_file_date = datetime.fromtimestamp(os.path.getmtime('pwd.bin'), timezone.utc)
+    print(local_file_date)
+    print(created)
+    if created is None:
+        pass
+    elif created < local_file_date:
+        print('Локальный файл новее, чем файл в облаке\n'
+              'Загрузить более старый файл? [y/n]')
+        answer = input()
+        if answer == 'y':
+            yandex_disk.download('app:/pwd.bin', 'pwd.bin')
+    else:
+        yandex_disk.download('app:/pwd.bin', 'pwd.bin')
 
 
 def read_file():
@@ -131,6 +182,7 @@ def get_base():
 def quit():
     if base_changed:
         save_file()
+        upload_file()
     exit()
 
 
