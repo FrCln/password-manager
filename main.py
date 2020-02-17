@@ -80,7 +80,9 @@ def download_file():
     for file in yandex_disk.listdir('app:/'):
         if file['name'] == 'pwd.bin':
             created = file['created']
-    local_file_date = datetime.fromtimestamp(os.path.getmtime('pwd.bin'), timezone.utc)
+    local_file_date = datetime.fromtimestamp(
+        os.path.getmtime('pwd.bin'), timezone.utc
+    )
     print(local_file_date)
     print(created)
     if created is None:
