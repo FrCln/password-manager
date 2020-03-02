@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"lo",
+				"local_file_date"
+			],
+			[
 				"yad",
 				"yadisk_token"
 			],
@@ -35,36 +39,7 @@
 			"file": "tasks.txt",
 			"settings":
 			{
-				"buffer_size": 344,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "disk-get-token.py",
-			"settings":
-			{
-				"buffer_size": 597,
-				"encoding": "UTF-8",
-				"line_ending": "Windows",
-				"name": "import sys"
-			}
-		},
-		{
-			"file": "disk-test.py",
-			"settings":
-			{
-				"buffer_size": 964,
-				"encoding": "UTF-8",
-				"line_ending": "Windows",
-				"name": "import yadisk"
-			}
-		},
-		{
-			"file": "requirements.txt",
-			"settings":
-			{
-				"buffer_size": 61,
+				"buffer_size": 424,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -130,6 +105,11 @@
 	],
 	"file_history":
 	[
+		"/C/Python/projects/password-meneger/main.py",
+		"/C/Python/projects/password-meneger/graph.py",
+		"/C/Python/projects/password-meneger/requirements.txt",
+		"/C/Python/projects/password-meneger/disk-test.py",
+		"/C/Python/projects/password-meneger/disk-get-token.py",
 		"/C/Python/projects/password-meneger/yadisk-secret.txt",
 		"/C/Python/projects/password-meneger/drive-test.py",
 		"/C/Python/projects/password-meneger/venv/Scripts/activate",
@@ -162,7 +142,7 @@
 	],
 	"find":
 	{
-		"height": 37.0
+		"height": 41.0
 	},
 	"find_in_files":
 	{
@@ -202,7 +182,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
@@ -211,49 +191,20 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 344,
+						"buffer_size": 424,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								297,
+								297
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "disk-get-token.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 597,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								229,
-								229
-							]
-						],
-						"settings":
-						{
-							"auto_name": "import sys",
-							"syntax": "Packages/Python/Python.sublime-syntax"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -261,70 +212,13 @@
 					},
 					"stack_index": 0,
 					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "disk-test.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 964,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								351,
-								336
-							]
-						],
-						"settings":
-						{
-							"auto_name": "import yadisk",
-							"syntax": "Packages/Python/Python.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 84.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "requirements.txt",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 61,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								61,
-								61
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
 				}
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 37.0
+		"height": 41.0
 	},
 	"input":
 	{
@@ -365,7 +259,7 @@
 	"project": "pwd.sublime-project",
 	"replace":
 	{
-		"height": 70.0
+		"height": 78.0
 	},
 	"save_all_on_build": true,
 	"select_file":

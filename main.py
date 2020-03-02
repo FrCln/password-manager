@@ -80,14 +80,16 @@ def download_file():
     for file in yandex_disk.listdir('app:/'):
         if file['name'] == 'pwd.bin':
             created = file['created']
-    local_file_date = datetime.fromtimestamp(
-        os.path.getmtime('pwd.bin'), timezone.utc
-    )
-    print(local_file_date)
-    print(created)
+    try:
+        local_file_date = datetime.fromtimestamp(
+            os.path.getmtime('pwd.bin'), timezone.utc
+        )
+    except FileNotFoundError:
+        local_file_date = None
     if created is None:
-        pass
-    elif created < local_file_date:
+        print('Файл в облаке отсутствует')
+        return
+    elif local_file_date is not None and created < local_file_date:
         print('Локальный файл новее, чем файл в облаке\n'
               'Загрузить более старый файл? [y/n]')
         answer = input()
@@ -148,11 +150,13 @@ def save_file():
 
 
 def upload_file():
-    """
-    y.remove('app:/pwd.bin')
-    y.upload('pwd.bin', 'app:/pwd.bin')
-    """
-    pass
+    if yandex_disk:
+        if any(
+            file['name'] == 'pwd.bin'
+            for file in yandex_disk.listdir('app:/')
+        ):
+            yandex_disk.remove('app:/pwd.bin')
+        yandex_disk.upload('pwd.bin', 'app:/pwd.bin')
 
 
 def add_password():
