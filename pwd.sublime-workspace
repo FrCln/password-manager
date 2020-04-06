@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"DE",
+				"DEFAULT_FONT"
+			],
+			[
+				"Inp",
+				"InputText"
+			],
+			[
 				"lo",
 				"local_file_date"
 			],
@@ -42,6 +50,25 @@
 				"buffer_size": 424,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "PySimpleGUItest.py",
+			"settings":
+			{
+				"buffer_size": 690,
+				"encoding": "UTF-8",
+				"line_ending": "Unix",
+				"name": "import PySimpleGUI as sg"
+			}
+		},
+		{
+			"file": "main.py",
+			"settings":
+			{
+				"buffer_size": 5335,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
 			}
 		}
 	],
@@ -101,7 +128,7 @@
 	},
 	"expanded_folders":
 	[
-		"/C/Python/projects/password-meneger"
+		"/Users/anatoly/Documents/GitHub/password-maneger"
 	],
 	"file_history":
 	[
@@ -142,7 +169,7 @@
 	],
 	"find":
 	{
-		"height": 41.0
+		"height": 45.0
 	},
 	"find_in_files":
 	{
@@ -156,6 +183,9 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"font",
+			"size",
+			"text_justification",
 			"78ce1482322f46ec8b8a8d91b7663209",
 			"Ч",
 			"Чистов",
@@ -182,7 +212,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -198,8 +228,8 @@
 						"selection":
 						[
 							[
-								297,
-								297
+								424,
+								424
 							]
 						],
 						"settings":
@@ -210,7 +240,67 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "PySimpleGUItest.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 690,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								690,
+								690
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"auto_name": "import PySimpleGUI as sg",
+							"syntax": "Packages/User/Python3.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
 					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "main.py",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 5335,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								453,
+								453
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/User/Python3.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
 					"type": "text"
 				}
 			]
@@ -218,7 +308,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 41.0
+		"height": 33.0
 	},
 	"input":
 	{
@@ -259,7 +349,7 @@
 	"project": "pwd.sublime-project",
 	"replace":
 	{
-		"height": 78.0
+		"height": 62.0
 	},
 	"save_all_on_build": true,
 	"select_file":
