@@ -176,7 +176,7 @@ def get_password():
     serv = input('Введите название сервиса: ')
     try:
         login, password = passwords[serv]
-        print(f'{login=}, {password=}')
+        print(f'login={login}, password={password}')
     except KeyError:
         print(f'Записи {serv} не найдено')
 
