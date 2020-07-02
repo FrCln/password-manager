@@ -1,17 +1,15 @@
-from typing import Optional
-
 import base64
-from datetime import datetime, timedelta, timezone
 import json
 import os
 import webbrowser
+from datetime import datetime, timezone
+from typing import Optional
 
+import yadisk
 from cryptography.fernet import Fernet, InvalidToken
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-import yadisk
-
 
 NO_YANDEX_DISK = 0
 NO_FILE_IN_CLOUD = 1
