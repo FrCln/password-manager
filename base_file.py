@@ -28,12 +28,15 @@ class FileCorrupted(Exception):
 
 
 class BaseFile:
+
     yandex_disk: Optional[yadisk.YaDisk]
     passwords: dict
+    status: int
 
     def __init__(self):
         self.yandex_disk = None
         self.passwords = {}
+        self.status = 0
         self.generate_salt()
 
     def generate_salt(self):
@@ -44,11 +47,16 @@ class BaseFile:
             with open('yadisk-secret.txt') as f:
                 application_id = f.readline().strip()
                 application_secret = f.readline().strip()
-                yadisk_token = f.readline().strip()
 
         except FileNotFoundError:
             print('Яндекс-диск недоступен')
             return
+
+        try:
+            with open('yadisk-token.txt') as f:
+                yadisk_token = f.readline().strip()
+        except FileNotFoundError:
+            yadisk_token = ''
 
         if not yadisk_token:
             self.yandex_disk = yadisk.YaDisk(application_id, application_secret)
@@ -62,40 +70,43 @@ class BaseFile:
                 sys.exit(1)
 
             yadisk_token = self.yandex_disk.token = response.access_token
-            with open('yadisk-secret.txt', 'a') as f:
-                f.write('\n' + yadisk_token + '\n')
+            with open('yadisk-token.txt', 'w') as f:
+                f.write(yadisk_token)
 
         else:
             self.yandex_disk = yadisk.YaDisk(token=yadisk_token)
 
-        if not yandex_disk.check_token():
+        if not self.yandex_disk.check_token():
             print('Яндекс-диск недоступен')
             self.yandex_disk = None
 
     def check_file(self):
         if not self.yandex_disk:
-            return NO_YANDEX_DISK
+            self.status = NO_YANDEX_DISK
+            return
 
         for file in self.yandex_disk.listdir('app:/'):
             if file['name'] == 'pwd.bin':
                 created = file['created']
                 break
         else:
-            return NO_FILE_IN_CLOUD
+            self.status = NO_FILE_IN_CLOUD
+            return
 
         try:
             local_file_date = datetime.fromtimestamp(
                 os.path.getmtime('pwd.bin'), timezone.utc
             )
         except FileNotFoundError:
-            return NO_LOCAL_FILE
+            self.status = NO_LOCAL_FILE
+            return
 
         if created < local_file_date:
-            return CLOUD_FILE_OLDER
+            self.status = CLOUD_FILE_OLDER
         elif created > local_file_date:
-            return CLOUD_FILE_NEWER
+            self.status = CLOUD_FILE_NEWER
         else:
-            return FILES_IDENTICAL
+            self.status = FILES_IDENTICAL
 
     def download_file(self):
         self.yandex_disk.download('app:/pwd.bin', 'pwd.bin')

@@ -5,24 +5,37 @@ import sys
 from PyQt5 import Qt, QtWidgets
 
 from base_file import *
-from gui import mainpassword, create_new
+from gui import mainpassword, create_new, main_window
 
 
 class MainApp(Qt.QApplication):
 
     mainPasswordWindow: mainpassword.Ui_MainWindow
     createNewWindow: create_new.Ui_MainWindow
+    mainWindow: main_window.Ui_MainWindow
 
     def __init__(self, *args):
         super().__init__(*args)
         self.base_changed = False
         self.base = BaseFile()
+        self.connect_base()
         self.main_password = ''
         if 'pwd.bin' in os.listdir():
             self.ask_main_password()
         else:
-            # dialog yaDisk
-            self.create_new_base_dialog()
+            mb = QtWidgets.QMessageBox()
+            mb.setWindowTitle("Создание новой базы")
+            mb.setText("Файл базы отсутствует. Создать новый или получить из облака?")
+            button_new = mb.addButton("Создать новый", QtWidgets.QMessageBox.AcceptRole)
+            button_cloud = mb.addButton("Получить из облака", QtWidgets.QMessageBox.RejectRole)
+            mb.exec()
+
+            if mb.clickedButton() == button_new:
+                self.create_new_base_dialog()
+            elif mb.clickedButton() == button_cloud:
+                self.ask_main_password()
+                self.read_base()
+                self.show_main_window()
 
     def ask_main_password(self):
         self.mainPasswordWindow = mainpassword.Ui_MainWindow()
@@ -33,7 +46,8 @@ class MainApp(Qt.QApplication):
     def enter_master_password(self):
         self.main_password = self.mainPasswordWindow.passwordInput.text()
         self.mainPasswordWindow.close()
-        print(self.main_password) # FIXIT
+        self.read_base()
+        self.show_main_window()
 
     def cancel_master_password(self):
         if 'pwd.bin' in os.listdir():
@@ -70,47 +84,73 @@ class MainApp(Qt.QApplication):
             mb.exec()
             return
         self.createNewWindow.close()
-        self.create_new_base(password)
+        self.main_password = password
+        self.create_new_base()
 
     @staticmethod
     def _check_password(password):
         return len(password) > 0
 
-    def create_new_base(self, password):
-        print(password) # FIXIT
+    def connect_base(self):
+        self.base.connect_yadisk()
+        self.base.check_file()
+
+    def read_base(self):
+        if self.base.status in (CLOUD_FILE_NEWER, NO_LOCAL_FILE): # CLOUD_FILE_OLDER?
+            self.base.download_file()
+        try:
+            self.base.read_file(self.main_password)
+        except FileNotFoundError:
+            self.base.create_base()
+        except IncorrectPassword:
+            mb = QtWidgets.QMessageBox()
+            mb.setWindowTitle('Неверный пароль')
+            button_ok = mb.addButton("Ввести заново", QtWidgets.QMessageBox.AcceptRole)
+            button_cancel = mb.addButton("Создать новую базу", QtWidgets.QMessageBox.RejectRole)
+            mb.exec()
+
+            if mb.clickedButton() == button_ok:
+                self.ask_main_password()
+            elif mb.clickedButton() == button_cancel:
+                self.create_new_base_dialog()
+
+    def show_main_window(self):
+        self.mainWindow = main_window.Ui_MainWindow()
+        self.main_window_setup()
+        self.main_window_build_handlers()
+        self.mainWindow.show()
+
+    def main_window_setup(self):
+        for entry in self.base.passwords:
+            self.mainWindow.passwordsList.addItem(entry)
+        self.mainWindow.showButton.setEnabled(False)
+        self.mainWindow.copyButton.setEnabled(False)
+        self.mainWindow.addButton.setEnabled(False)
+
+    def main_window_build_handlers(self):
+        self.mainWindow.passwordsList.currentItemChanged.connect(self.select_item)
+
+    def select_item(self):
+        # self.mainWindow.passwordsList.currentItem().text()
+        self.mainWindow.showButton.setEnabled(True)
+        self.mainWindow.copyButton.setEnabled(True)
+
+
+def gui_exception_hook(exc_type, value, traceback):
+    import traceback as tb
+    msg = QtWidgets.QMessageBox()
+    msg.setIcon(QtWidgets.QMessageBox.Critical)
+    msg.setText(str(value))
+    msg.setInformativeText('\n'.join(tb.format_exception(exc_type, value, traceback)))
+    msg.setWindowTitle(exc_type.__name__)
+    msg.exec_()
 
 
 def main():
     app = MainApp(sys.argv)
+    sys.excepthook = gui_exception_hook
     sys.exit(app.exec())
 
-
-def old_main():
-    base = BaseFile()
-    base.connect_yadisk()
-    status = base.check_file()
-    if status in (CLOUD_FILE_NEWER, NO_LOCAL_FILE):
-        base.download_file()
-    try:
-        password = input('Введите пароль: ')
-        base.read_file(password)
-    except FileNotFoundError:
-        base.create_base()
-
-    while True:
-        com = get_command()
-        if com in funcs:
-            funcs[com][0](base)
-        else:
-            print('Такой команды нет!')
-
-
-def get_command():
-    print('Введите команду:')
-    for com in funcs:
-        print(f'{com}. {funcs[com][1]}')
-
-    return input()
 
 
 def add_password(base):
@@ -146,10 +186,7 @@ def quit(base):
     exit()
 
 
-funcs = {
-    '1': (add_password, 'Ввести новый пароль'),
-    '2': (get_password, 'Получить пароль из базы'),
-    '3': (get_base, 'Получить список сервисов'),
-    '4': (quit, 'Выход')
-}
-main()
+
+
+if __name__ == '__main__':
+    main()
