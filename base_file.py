@@ -56,9 +56,6 @@ class BaseFile:
             with open('yadisk-token.txt') as f:
                 yadisk_token = f.readline().strip()
         except FileNotFoundError:
-            yadisk_token = ''
-
-        if not yadisk_token:
             self.yandex_disk = yadisk.YaDisk(application_id, application_secret)
             url = self.yandex_disk.get_code_url()
             webbrowser.open(url)
@@ -72,7 +69,6 @@ class BaseFile:
             yadisk_token = self.yandex_disk.token = response.access_token
             with open('yadisk-token.txt', 'w') as f:
                 f.write(yadisk_token)
-
         else:
             self.yandex_disk = yadisk.YaDisk(token=yadisk_token)
 

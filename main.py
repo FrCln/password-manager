@@ -34,8 +34,6 @@ class MainApp(Qt.QApplication):
                 self.create_new_base_dialog()
             elif mb.clickedButton() == button_cloud:
                 self.ask_main_password()
-                self.read_base()
-                self.show_main_window()
 
     def ask_main_password(self):
         self.mainPasswordWindow = mainpassword.Ui_MainWindow()
@@ -47,7 +45,6 @@ class MainApp(Qt.QApplication):
         self.main_password = self.mainPasswordWindow.passwordInput.text()
         self.mainPasswordWindow.close()
         self.read_base()
-        self.show_main_window()
 
     def cancel_master_password(self):
         if 'pwd.bin' in os.listdir():
@@ -85,14 +82,14 @@ class MainApp(Qt.QApplication):
             return
         self.createNewWindow.close()
         self.main_password = password
-        self.create_new_base()
+        self.show_main_window()
 
     @staticmethod
     def _check_password(password):
         return len(password) > 0
 
     def connect_base(self):
-        self.base.connect_yadisk()
+        # self.base.connect_yadisk()
         self.base.check_file()
 
     def read_base(self):
@@ -113,11 +110,15 @@ class MainApp(Qt.QApplication):
                 self.ask_main_password()
             elif mb.clickedButton() == button_cancel:
                 self.create_new_base_dialog()
+            else:
+                self.quit()
+        self.show_main_window()
 
     def show_main_window(self):
         self.mainWindow = main_window.Ui_MainWindow()
         self.main_window_setup()
         self.main_window_build_handlers()
+        self.mainWindow.closeEvent = self.closeEvent
         self.mainWindow.show()
 
     def main_window_setup(self):
@@ -134,6 +135,11 @@ class MainApp(Qt.QApplication):
         # self.mainWindow.passwordsList.currentItem().text()
         self.mainWindow.showButton.setEnabled(True)
         self.mainWindow.copyButton.setEnabled(True)
+
+    def closeEvent(self, event):
+        self.base.save_file()
+        self.base.upload_file()
+        event.accept()
 
 
 def gui_exception_hook(exc_type, value, traceback):
