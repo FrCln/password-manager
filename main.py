@@ -2,16 +2,16 @@
 import os
 import sys
 
-from PyQt5 import Qt, QtWidgets
+from PyQt5 import Qt, QtWidgets, QtCore
 
 from base_file import *
-from gui import mainpassword, create_new, main_window
+from gui import main_password, create_new_base, main_window
 
 
 class MainApp(Qt.QApplication):
 
-    mainPasswordWindow: mainpassword.Ui_MainWindow
-    createNewWindow: create_new.Ui_MainWindow
+    mainPasswordWindow: main_password.Ui_MainWindow
+    createNewWindow: create_new_base.Ui_MainWindow
     mainWindow: main_window.Ui_MainWindow
 
     def __init__(self, *args):
@@ -35,68 +35,32 @@ class MainApp(Qt.QApplication):
             elif mb.clickedButton() == button_cloud:
                 self.ask_main_password()
 
-    def ask_main_password(self):
-        self.mainPasswordWindow = mainpassword.Ui_MainWindow()
-        self.mainPasswordWindow.OKButton.clicked.connect(self.enter_master_password)
-        self.mainPasswordWindow.createNewButton.clicked.connect(self.cancel_master_password)
-        self.mainPasswordWindow.show()
-
-    def enter_master_password(self):
-        self.main_password = self.mainPasswordWindow.passwordInput.text()
-        self.mainPasswordWindow.close()
-        self.read_base()
-
-    def cancel_master_password(self):
-        if 'pwd.bin' in os.listdir():
-            mb = QtWidgets.QMessageBox()
-            mb.setWindowTitle("Создание новой базы")
-            mb.setText("Имеющаяся база будет удалена! Вы уверены?")
-            button_ok = mb.addButton("Да", QtWidgets.QMessageBox.AcceptRole)
-            button_cancel = mb.addButton("Нет", QtWidgets.QMessageBox.RejectRole)
-            mb.exec()
-
-            if mb.clickedButton() == button_ok:
-                self.mainPasswordWindow.close()
-                self.create_new_base_dialog()
-
-    def create_new_base_dialog(self):
-        self.createNewWindow = create_new.Ui_MainWindow()
-        self.createNewWindow.OKButton.clicked.connect(self.create_new_base_ok)
-        self.createNewWindow.show()
-
-    def create_new_base_ok(self):
-        if self.createNewWindow.lineEdit.text() != self.createNewWindow.lineEdit_2.text():
-            mb = QtWidgets.QMessageBox()
-            mb.setWindowTitle("Ошибка")
-            mb.setText("Пароли не совпадают")
-            mb.addButton("ОК", QtWidgets.QMessageBox.AcceptRole)
-            mb.exec()
-            return
-        password = self.createNewWindow.lineEdit.text()
-        if not self._check_password(password):
-            mb = QtWidgets.QMessageBox()
-            mb.setWindowTitle("Ошибка")
-            mb.setText("Пароль слишком простой")
-            mb.addButton("ОК", QtWidgets.QMessageBox.AcceptRole)
-            mb.exec()
-            return
-        self.createNewWindow.close()
-        self.main_password = password
-        self.show_main_window()
-
-    @staticmethod
-    def _check_password(password):
-        return len(password) > 0
-
     def connect_base(self):
-        # self.base.connect_yadisk()
+        try:
+            self.base.connect_yadisk()
+        except UserCancelException:
+            sys.exit(1)
         self.base.check_file()
 
+    def ask_main_password(self):
+        self.mainPasswordWindow = main_password.Ui_MainWindow(self)
+        self.mainPasswordWindow.send_password_signal.connect(self.read_base)
+        self.mainPasswordWindow.create_new_signal.connect(self.create_new_base_dialog)
+        self.mainPasswordWindow.show()
+
+    @QtCore.pyqtSlot()
+    def create_new_base_dialog(self):
+        self.createNewWindow = create_new_base.Ui_MainWindow(self)
+        self.createNewWindow.create_new_ok.connect(self.show_main_window)
+        self.createNewWindow.show()
+
+    @QtCore.pyqtSlot()
     def read_base(self):
         if self.base.status in (CLOUD_FILE_NEWER, NO_LOCAL_FILE): # CLOUD_FILE_OLDER?
             self.base.download_file()
         try:
-            self.base.read_file(self.main_password)
+            self.base.main_password = self.main_password
+            self.base.read_file()
         except FileNotFoundError:
             self.base.create_base()
         except IncorrectPassword:
@@ -114,32 +78,10 @@ class MainApp(Qt.QApplication):
                 self.quit()
         self.show_main_window()
 
+    @QtCore.pyqtSlot()
     def show_main_window(self):
-        self.mainWindow = main_window.Ui_MainWindow()
-        self.main_window_setup()
-        self.main_window_build_handlers()
-        self.mainWindow.closeEvent = self.closeEvent
+        self.mainWindow = main_window.Ui_MainWindow(self.base)
         self.mainWindow.show()
-
-    def main_window_setup(self):
-        for entry in self.base.passwords:
-            self.mainWindow.passwordsList.addItem(entry)
-        self.mainWindow.showButton.setEnabled(False)
-        self.mainWindow.copyButton.setEnabled(False)
-        self.mainWindow.addButton.setEnabled(False)
-
-    def main_window_build_handlers(self):
-        self.mainWindow.passwordsList.currentItemChanged.connect(self.select_item)
-
-    def select_item(self):
-        # self.mainWindow.passwordsList.currentItem().text()
-        self.mainWindow.showButton.setEnabled(True)
-        self.mainWindow.copyButton.setEnabled(True)
-
-    def closeEvent(self, event):
-        self.base.save_file()
-        self.base.upload_file()
-        event.accept()
 
 
 def gui_exception_hook(exc_type, value, traceback):
@@ -162,27 +104,27 @@ def main():
 def add_password(base):
     global base_changed
     serv = input('Введите название сервиса: ')
-    if serv in base.passwords:
+    if serv in base._passwords:
         answer = input(f'Запись {serv} уже есть. Перезаписать? (y/n) ')
         if answer.lower() != 'y':
             return
     login = input('Введите логин: ')
     pwd = input('Введите пароль: ')
-    base.passwords[serv] = (login, pwd)
+    base._passwords[serv] = (login, pwd)
     base_changed = True
 
 
 def get_password(base):
     serv = input('Введите название сервиса: ')
     try:
-        login, password = base.passwords[serv]
+        login, password = base._passwords[serv]
         print(f'login={login}, password={password}')
     except KeyError:
         print(f'Записи {serv} не найдено')
 
 
 def get_base(base):
-    print('\n'.join(base.passwords.keys()))
+    print('\n'.join(base._passwords.keys()))
 
 
 def quit(base):

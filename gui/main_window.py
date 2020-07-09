@@ -8,22 +8,26 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from base_file import BaseFile
 
 
 class Ui_MainWindow(QtWidgets.QMainWindow):
-    def __init__(self, *args):
-        super().__init__(*args)
 
+    base: BaseFile
+
+    def __init__(self, base, *args):
+        super().__init__(*args)
+        self.base = base
         self.width = 510
         self.height = 360
-        self.menuheight = 20
+        self.menu_height = 20
 
         self.setObjectName("MainWindow")
         self.setFixedSize(self.width, self.height)
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(5, 5, self.width - 10, self.height - 10 - self.menuheight))
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(5, 5, self.width - 10, self.height - 10 - self.menu_height))
         self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
@@ -83,7 +87,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.setCentralWidget(self.centralwidget)
 
         self.menubar = QtWidgets.QMenuBar(self)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, self.width, self.menuheight))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, self.width, self.menu_height))
         self.menubar.setObjectName("menubar")
         self.menu = QtWidgets.QMenu(self.menubar)
         self.menu.setObjectName("menu")
@@ -95,6 +99,9 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
         self.retranslateUi()
         QtCore.QMetaObject.connectSlotsByName(self)
+
+        self.main_window_setup()
+        self.build_handlers()
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
@@ -111,3 +118,24 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.addButton.setText(_translate("MainWindow", "Добавить новую запись"))
         self.menu.setTitle(_translate("MainWindow", "Меню"))
         self.settings.setText(_translate("MainWindow", "Настройки"))
+
+    def main_window_setup(self):
+        for entry in self.base.passwords:
+            self.passwordsList.addItem(entry)
+        self.showButton.setEnabled(False)
+        self.copyButton.setEnabled(False)
+        self.addButton.setEnabled(False)
+
+    def build_handlers(self):
+        self.passwordsList.currentItemChanged.connect(self.select_item)
+
+    def select_item(self):
+        # self.mainWindow.passwordsList.currentItem().text()
+        self.showButton.setEnabled(True)
+        self.copyButton.setEnabled(True)
+
+    def closeEvent(self, event):
+        if self.base.base_changed:
+            self.base.save_file()
+            self.base.upload_file()
+        event.accept()

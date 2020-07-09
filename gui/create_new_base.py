@@ -12,8 +12,11 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_MainWindow(QtWidgets.QMainWindow):
-    def __init__(self, *args):
+    create_new_ok = QtCore.pyqtSignal()
+
+    def __init__(self, parent, *args):
         super().__init__(*args)
+        self.parent = parent
         self.setObjectName("MainWindow")
         self.resize(298, 119)
         self.centralwidget = QtWidgets.QWidget(self)
@@ -47,9 +50,38 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.retranslateUi()
         QtCore.QMetaObject.connectSlotsByName(self)
 
+        self.build_handlers()
+
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("MainWindow", "Новая база"))
         self.label.setText(_translate("MainWindow", "Введите пароль:"))
         self.label_2.setText(_translate("MainWindow", "Еще раз:"))
         self.OKButton.setText(_translate("MainWindow", "ОК"))
+
+    def build_handlers(self):
+        self.OKButton.clicked.connect(self.create_new_base_ok)
+
+    def create_new_base_ok(self):
+        if self.lineEdit.text() != self.lineEdit_2.text():
+            mb = QtWidgets.QMessageBox()
+            mb.setWindowTitle("Ошибка")
+            mb.setText("Пароли не совпадают")
+            mb.addButton("ОК", QtWidgets.QMessageBox.AcceptRole)
+            mb.exec()
+            return
+        password = self.createNewWindow.lineEdit.text()
+        if not self._check_password(password):
+            mb = QtWidgets.QMessageBox()
+            mb.setWindowTitle("Ошибка")
+            mb.setText("Пароль слишком простой")
+            mb.addButton("ОК", QtWidgets.QMessageBox.AcceptRole)
+            mb.exec()
+            return
+        self.parent.main_password = password
+        self.create_new_ok.emit()
+        self.close()
+
+    @staticmethod
+    def _check_password(password):
+        return len(password) > 0

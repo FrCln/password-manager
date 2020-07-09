@@ -5,6 +5,7 @@ import webbrowser
 from datetime import datetime, timezone
 from typing import Optional
 
+from PyQt5 import Qt, QtWidgets, QtCore
 import yadisk
 from cryptography.fernet import Fernet, InvalidToken
 from cryptography.hazmat.backends import default_backend
@@ -27,54 +28,106 @@ class FileCorrupted(Exception):
     pass
 
 
-class BaseFile:
+class UserCancelException(Exception):
+    pass
+
+
+class BaseFile(QtWidgets.QWidget):
 
     yandex_disk: Optional[yadisk.YaDisk]
-    passwords: dict
     status: int
+    base_changed: bool
 
-    def __init__(self):
+    def __init__(self, *args):
+        super().__init__(*args)
         self.yandex_disk = None
-        self.passwords = {}
+        self.main_password = ''
+        self._passwords = {}
         self.status = 0
+        self.base_changed = False
         self.generate_salt()
 
     def generate_salt(self):
         self.salt = b'\x82\xe1\x85~!\xaf\xd5\xd2}\xbc#\xf0\x0f\xed\x02\xf9'
 
+    @property
+    def passwords(self):
+        return self._passwords
+
     def connect_yadisk(self):
-        try:
-            with open('yadisk-secret.txt') as f:
-                application_id = f.readline().strip()
-                application_secret = f.readline().strip()
-
-        except FileNotFoundError:
-            print('Яндекс-диск недоступен')
-            return
-
         try:
             with open('yadisk-token.txt') as f:
                 yadisk_token = f.readline().strip()
         except FileNotFoundError:
-            self.yandex_disk = yadisk.YaDisk(application_id, application_secret)
-            url = self.yandex_disk.get_code_url()
-            webbrowser.open(url)
-            code = input('Введите код, полученный от Яндекс-диска: ')
-            try:
-                response = self.yandex_disk.get_token(code)
-            except yadisk.exceptions.BadRequestError:
-                print("Bad code")
-                sys.exit(1)
+            self.get_new_token()
+            return
 
-            yadisk_token = self.yandex_disk.token = response.access_token
-            with open('yadisk-token.txt', 'w') as f:
-                f.write(yadisk_token)
-        else:
-            self.yandex_disk = yadisk.YaDisk(token=yadisk_token)
-
+        self.yandex_disk = yadisk.YaDisk(token=yadisk_token)
         if not self.yandex_disk.check_token():
-            print('Яндекс-диск недоступен')
+            mb = QtWidgets.QMessageBox()
+            mb.setWindowTitle('Ошибка')
+            mb.setText('Токен Яндекс-диска некорректен.\nПолучить новый?')
+            ok = mb.addButton('OK', QtWidgets.QMessageBox.AcceptRole)
+            cancel = mb.addButton('Отмена', QtWidgets.QMessageBox.RejectRole)
+            mb.exec()
+
+            if mb.clickedButton() == ok:
+                self.get_new_token()
+            else:
+                self.yadisk_error_dialog()
+
+    def get_new_token(self):
+        try:
+            with open('yadisk-secret.txt') as f:
+                application_id = f.readline().strip()
+                application_secret = f.readline().strip()
+        except FileNotFoundError:
+            self.yadisk_error_dialog('Данные Yandex OAuth не найдены.')
+            return
+
+        self.yandex_disk = yadisk.YaDisk(application_id, application_secret)
+        url = self.yandex_disk.get_code_url()
+        webbrowser.open(url)
+        while True:
+            code, ok = QtWidgets.QInputDialog.getText(
+                self,
+                'Подтверждение',
+                'Введите код подтверждения, полученный от Яндекс-диска:'
+            )
+            if ok:
+                try:
+                    response = self.yandex_disk.get_token(code)
+                    break
+                except yadisk.exceptions.BadRequestError:
+                    mb = QtWidgets.QMessageBox()
+                    mb.setWindowTitle('Ошибка')
+                    mb.setText('Неверный код.')
+                    ok = mb.addButton('OK', QtWidgets.QMessageBox.AcceptRole)
+                    mb.exec()
+
+                    if mb.clickedButton() == ok:
+                        continue
+                    else:
+                        self.yadisk_error_dialog()
+                        return
+
+        yadisk_token = self.yandex_disk.token = response.access_token
+        with open('yadisk-token.txt', 'w') as f:
+            f.write(yadisk_token)
+
+    def yadisk_error_dialog(self, msg=None):
+        msg = msg or 'Яндекс-диск недоступен.'
+        mb = QtWidgets.QMessageBox()
+        mb.setWindowTitle('Ошибка')
+        mb.setText(msg + '\nРаботать оффлайн?')
+        ok = mb.addButton('OK', QtWidgets.QMessageBox.AcceptRole)
+        cancel = mb.addButton('Отмена', QtWidgets.QMessageBox.RejectRole)
+        mb.exec()
+
+        if mb.clickedButton() == ok:
             self.yandex_disk = None
+        else:
+            raise UserCancelException
 
     def check_file(self):
         if not self.yandex_disk:
@@ -107,8 +160,7 @@ class BaseFile:
     def download_file(self):
         self.yandex_disk.download('app:/pwd.bin', 'pwd.bin')
 
-    def read_file(self, main_password):
-        self.main_password = main_password
+    def read_file(self):
         try:
             with open('pwd.bin', 'rb') as f:
                 data = f.read()
@@ -128,12 +180,12 @@ class BaseFile:
         except InvalidToken:
             raise IncorrectPassword
         try:
-            self.passwords = json.loads(data)
+            self._passwords = json.loads(data)
         except ValueError:
             raise FileCorrupted
 
     def save_file(self):
-        data = json.dumps(self.passwords).encode(encoding='utf-8')
+        data = json.dumps(self._passwords).encode(encoding='utf-8')
         kdf = PBKDF2HMAC(
             algorithm=hashes.SHA256(),
             length=32,
@@ -156,4 +208,4 @@ class BaseFile:
             self.yandex_disk.upload('pwd.bin', 'app:/pwd.bin')
 
     def create_base(self):
-        self.passwords = {}
+        self._passwords = {}
