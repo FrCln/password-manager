@@ -70,7 +70,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             mb.addButton("ОК", QtWidgets.QMessageBox.AcceptRole)
             mb.exec()
             return
-        password = self.createNewWindow.lineEdit.text()
+        password = self.lineEdit.text()
         if not self._check_password(password):
             mb = QtWidgets.QMessageBox()
             mb.setWindowTitle("Ошибка")

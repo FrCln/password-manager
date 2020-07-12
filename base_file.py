@@ -184,6 +184,14 @@ class BaseFile(QtWidgets.QWidget):
         except ValueError:
             raise FileCorrupted
 
+    def add_new_entry(self, name, login, password):
+        self._passwords[name] = (login, password)
+        self.base_changed = True
+
+    def remove_entry(self, name):
+        self._passwords.pop(name)
+        self.base_changed = True
+
     def save_file(self):
         data = json.dumps(self._passwords).encode(encoding='utf-8')
         kdf = PBKDF2HMAC(
