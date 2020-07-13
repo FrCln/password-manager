@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '.\mainwindow2.ui'
-#
-# Created by: PyQt5 UI code generator 5.13.2
-#
-# WARNING! All changes made in this file will be lost!
+import base64
+import os
 
-
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import Qt, QtCore, QtGui, QtWidgets
 from base_file import BaseFile
 
 
@@ -15,11 +11,12 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
     base: BaseFile
 
-    def __init__(self, base, *args):
+    def __init__(self, parent, *args):
         super().__init__(*args)
-        self.base = base
+        self.parent = parent
+        self.base = parent.base
         self.width = 510
-        self.height = 360
+        self.height = 380
         self.menu_height = 20
         self.current_password = ''
 
@@ -150,7 +147,8 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
     def main_window_setup(self):
         self.passwordsList.clear()
-        for entry in self.base.passwords:
+        self.current_password = ''
+        for entry in sorted(self.base.passwords):
             self.passwordsList.addItem(entry)
         self.showButton.setEnabled(False)
         self.copyButton.setEnabled(False)
@@ -170,12 +168,8 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.addButton.clicked.connect(self.add_new_entry)
         self.showButton.clicked.connect(self.show_password)
         self.copyButton.clicked.connect(self.copy_password)
-
-        # Context menu
-        self.passwordsList.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
-        remove_action = QtWidgets.QAction("Удалить запись")
-        remove_action.triggered.connect(self.remove_entry)
-        self.passwordsList.addAction(remove_action)
+        self.generateButton.clicked.connect(self.generate_password)
+        self.horizontalSlider.valueChanged.connect(lambda: self.label.setText(str(self.horizontalSlider.value())))
 
     def select_item(self):
         login, self.current_password = self.base.passwords[self.passwordsList.currentItem().text()]
@@ -188,7 +182,8 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.passView.setText(self.current_password)
 
     def copy_password(self):
-        pass
+        clipboard = self.parent.clipboard()
+        clipboard.setText(self.current_password)
 
     def check_all(self):
         if all(x.text() for x in (self.nameEdit, self.loginEdit, self.passEdit, self.passEdit2)):
@@ -232,7 +227,23 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.main_window_setup()
 
     def remove_entry(self, name):
-        print(name)
+        mb = QtWidgets.QMessageBox()
+        mb.setWindowTitle("Удаление записи")
+        mb.setText("Запись будет удалена. Вы уверены?")
+        button_ok = mb.addButton("Да", QtWidgets.QMessageBox.AcceptRole)
+        button_cancel = mb.addButton("Нет", QtWidgets.QMessageBox.RejectRole)
+        mb.exec()
+
+        if mb.clickedButton() != button_ok:
+            return
+
+        self.base.remove_entry(name)
+        self.main_window_setup()
+
+    def generate_password(self):
+        password = base64.urlsafe_b64encode(os.urandom(32)).decode('utf-8')[:self.horizontalSlider.value()]
+        self.passEdit.setText(password)
+        self.passEdit2.setText(password)
 
     @staticmethod
     def _check_password(password):
