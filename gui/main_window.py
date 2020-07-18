@@ -2,6 +2,7 @@
 
 import base64
 import os
+import random
 
 from PyQt5 import Qt, QtCore, QtGui, QtWidgets
 from base_file import BaseFile
@@ -242,9 +243,15 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.main_window_setup()
 
     def generate_password(self):
-        password = base64.urlsafe_b64encode(os.urandom(32)).decode('utf-8')[:self.horizontalSlider.value()]
+        length = self.horizontalSlider.value()
+        token = base64.urlsafe_b64encode(os.urandom(20)).decode('utf-8')
+        digit_place = random.randint(0, length - 1)
+        digit = str(random.randint(0, 9))
+        password = token[:digit_place] + digit + token[digit_place + 1 : length]
         self.passEdit.setText(password)
         self.passEdit2.setText(password)
+        clipboard = self.parent.clipboard()
+        clipboard.setText(password)
 
     @staticmethod
     def _check_password(password):
