@@ -39,7 +39,7 @@ class MainApp(Qt.QApplication):
         try:
             self.base.connect_yadisk()
         except UserCancelException:
-            sys.exit(1)
+            sys.exit(0)
         self.base.check_file()
 
     def ask_main_password(self):
@@ -80,7 +80,7 @@ class MainApp(Qt.QApplication):
 
     @QtCore.pyqtSlot()
     def show_main_window(self):
-        self.mainWindow = main_window.Ui_MainWindow(self.base)
+        self.mainWindow = main_window.Ui_MainWindow(self)
         self.mainWindow.show()
 
 
@@ -98,42 +98,6 @@ def main():
     app = MainApp(sys.argv)
     sys.excepthook = gui_exception_hook
     sys.exit(app.exec())
-
-
-
-def add_password(base):
-    global base_changed
-    serv = input('Введите название сервиса: ')
-    if serv in base._passwords:
-        answer = input(f'Запись {serv} уже есть. Перезаписать? (y/n) ')
-        if answer.lower() != 'y':
-            return
-    login = input('Введите логин: ')
-    pwd = input('Введите пароль: ')
-    base._passwords[serv] = (login, pwd)
-    base_changed = True
-
-
-def get_password(base):
-    serv = input('Введите название сервиса: ')
-    try:
-        login, password = base._passwords[serv]
-        print(f'login={login}, password={password}')
-    except KeyError:
-        print(f'Записи {serv} не найдено')
-
-
-def get_base(base):
-    print('\n'.join(base._passwords.keys()))
-
-
-def quit(base):
-    if base_changed:
-        base.save_file()
-        base.upload_file()
-    exit()
-
-
 
 
 if __name__ == '__main__':
