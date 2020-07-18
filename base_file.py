@@ -82,7 +82,11 @@ class BaseFile(QtWidgets.QWidget):
                 application_id = f.readline().strip()
                 application_secret = f.readline().strip()
         except FileNotFoundError:
-            self.yadisk_error_dialog('Данные Yandex OAuth не найдены.')
+            self.yadisk_error_dialog('Данные Yandex OAuth не найдены. '
+                                     'Чтобы зарегистрировать приложение, '
+                                     'перейдите по адресу: https://oauth.yandex.ru '
+                                     'и сохраните выданные id и пароль в файл '
+                                     'yadisk-secret.txt')
             return
 
         self.yandex_disk = yadisk.YaDisk(application_id, application_secret)
