@@ -137,12 +137,13 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
     def eventFilter(self, source, event):
         if event.type() == QtCore.QEvent.ContextMenu and source is self.passwordsList:
-            menu = QtWidgets.QMenu()
-            menu.addAction('Удалить запись')
-            if menu.exec_(event.globalPos()):
-                item = source.itemAt(event.pos())
-                self.remove_entry(item.text())
-            return True
+            item = source.itemAt(event.pos())
+            if item is not None:
+                menu = QtWidgets.QMenu()
+                menu.addAction('Удалить запись')
+                if menu.exec_(event.globalPos()):
+                    self.remove_entry(item.text())
+                return True
         return super().eventFilter(source, event)
 
     def main_window_setup(self):
