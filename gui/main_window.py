@@ -171,12 +171,6 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.showButton.clicked.connect(self.show_password)
         self.copyButton.clicked.connect(self.copy_password)
 
-        # Context menu
-        self.passwordsList.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
-        remove_action = QtWidgets.QAction("Удалить запись")
-        remove_action.triggered.connect(self.remove_entry)
-        self.passwordsList.addAction(remove_action)
-
     def select_item(self):
         login, self.current_password = self.base.passwords[self.passwordsList.currentItem().text()]
         self.loginView.setText(login)
