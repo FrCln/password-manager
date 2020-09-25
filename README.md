@@ -1,2 +1,2 @@
 # Password manager
- Password manager
+ Secure password manager
