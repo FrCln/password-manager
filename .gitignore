@@ -1,9 +1,9 @@
 *pycache*
 venv
-pwd.bin
+*.bin
 *.json
-yadisk-secret.txt
-yadisk-token.txt
+yadisk-secret*.txt
+yadisk-token*.txt
 *.pyc
 pwd.sublime-workspace
 .idea

@@ -5,6 +5,7 @@ import sys
 from PyQt5 import Qt, QtWidgets, QtCore
 
 from base_file import *
+from settings import Settings
 from gui import main_password, create_new_base, main_window
 
 
@@ -13,14 +14,27 @@ class MainApp(Qt.QApplication):
     mainPasswordWindow: main_password.Ui_MainWindow
     createNewWindow: create_new_base.Ui_MainWindow
     mainWindow: main_window.Ui_MainWindow
+    base_changed: bool
+    base: BaseFile
+    main_password: str
 
     def __init__(self, *args):
         super().__init__(*args)
+        try:
+            self.settings = Settings.load_from_file()
+        except FileNotFoundError:
+            self.settings = Settings()
+        if self.settings.first_run:
+            self.create_new_base_dialog()
+        else:
+            self.base_read()
+
+    def base_read(self):
         self.base_changed = False
         self.base = BaseFile()
         self.connect_base()
         self.main_password = ''
-        if 'pwd.bin' in os.listdir():
+        if self.settings.filename in os.listdir():
             self.ask_main_password()
         else:
             mb = QtWidgets.QMessageBox()

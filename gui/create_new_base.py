@@ -28,25 +28,38 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.formLayout.setLabelAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
         self.formLayout.setContentsMargins(0, 0, 0, 0)
         self.formLayout.setObjectName("formLayout")
+
+        self.label_0 = QtWidgets.QLabel(self.formLayoutWidget)
+        self.label_0.setObjectName("label_2")
+        self.formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label_0)
+
+        self.lineEdit_0 = QtWidgets.QLineEdit(self.formLayoutWidget)
+        self.lineEdit_0.setObjectName("lineEdit")
+        self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.lineEdit_0)
+
         self.lineEdit = QtWidgets.QLineEdit(self.formLayoutWidget)
         self.lineEdit.setObjectName("lineEdit")
         self.lineEdit.setEchoMode(QtWidgets.QLineEdit.Password)
-        self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.lineEdit)
+        self.formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.lineEdit)
+
         self.lineEdit_2 = QtWidgets.QLineEdit(self.formLayoutWidget)
         self.lineEdit_2.setObjectName("lineEdit_2")
         self.lineEdit_2.setEchoMode(QtWidgets.QLineEdit.Password)
         self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.lineEdit_2)
+
         self.label_2 = QtWidgets.QLabel(self.formLayoutWidget)
         self.label_2.setObjectName("label_2")
         self.formLayout.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.label_2)
+
         self.OKButton = QtWidgets.QPushButton(self.formLayoutWidget)
         self.OKButton.setObjectName("pushButton_2")
         self.formLayout.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.OKButton)
+
         self.label = QtWidgets.QLabel(self.formLayoutWidget)
         self.label.setObjectName("label")
-        self.formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label)
-        self.setCentralWidget(self.centralwidget)
+        self.formLayout.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.label)
 
+        self.setCentralWidget(self.centralwidget)
         self.retranslateUi()
         QtCore.QMetaObject.connectSlotsByName(self)
 
@@ -55,9 +68,11 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("MainWindow", "Новая база"))
+        self.label_0.setText(_translate("MainWindow", "Имя файла:"))
         self.label.setText(_translate("MainWindow", "Введите пароль:"))
         self.label_2.setText(_translate("MainWindow", "Еще раз:"))
         self.OKButton.setText(_translate("MainWindow", "ОК"))
+        self.lineEdit_0.setText('pwd.bin')
 
     def build_handlers(self):
         self.OKButton.clicked.connect(self.create_new_base_ok)
@@ -78,6 +93,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             mb.addButton("ОК", QtWidgets.QMessageBox.AcceptRole)
             mb.exec()
             return
+        self.parent.settings.filename = self.lineEdit_0.text()
         self.parent.main_password = password
         self.create_new_ok.emit()
         self.close()
