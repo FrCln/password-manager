@@ -5,7 +5,7 @@ import webbrowser
 from datetime import datetime, timezone
 from typing import Optional
 
-from PyQt5 import Qt, QtWidgets, QtCore
+from PyQt5 import QtWidgets
 import yadisk
 from cryptography.fernet import Fernet, InvalidToken
 from cryptography.hazmat.backends import default_backend
@@ -54,7 +54,7 @@ class BaseFile(QtWidgets.QWidget):
     def passwords(self):
         return self._passwords
 
-    def connect_yadisk(self):
+    def connect_cloud(self):
         try:
             with open('yadisk-token.txt') as f:
                 yadisk_token = f.readline().strip()

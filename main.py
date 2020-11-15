@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-import os
 import sys
 
-from PyQt5 import Qt, QtWidgets, QtCore
+from PyQt5 import Qt, QtCore
 
 from base_file import *
 from settings import Settings
@@ -51,7 +50,7 @@ class MainApp(Qt.QApplication):
 
     def connect_base(self):
         try:
-            self.base.connect_yadisk()
+            self.base.connect_cloud()
         except UserCancelException:
             sys.exit(0)
         self.base.check_file()
